@@ -3,7 +3,7 @@ package proxy
 import (
 	log "github.com/Sirupsen/logrus"
 	sty "caesarproxy/proxy/strategy"
-	"reflect"
+	
 )
 
 func Run(){
