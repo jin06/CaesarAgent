@@ -1,4 +1,25 @@
 #proxy server config
 proxy:
-  port:9302
-  timeout:{write:10,read:10}
+  port: 9304
+  timeout: {write: 10, read: 10}
+
+#redirect stratery
+stratery: poll | weight
+
+#health check
+health:
+  type: host | port | url
+  #required if url
+  url: GET /test
+
+#servers
+endpoint:
+-
+  host: baidu.com
+  port: 80
+  weight: 1
+-
+  host: so.com
+  port: 80
+  weight: 1
+
