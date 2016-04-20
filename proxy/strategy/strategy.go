@@ -3,6 +3,7 @@ package strategy
 
 import (
 	"net/http"
+	log "github.com/Sirupsen/logrus"
 )
 
 type Strategy interface{
@@ -17,5 +18,6 @@ func NewPollStrategy() *PollStrategy{
 }
 
 func (ps *PollStrategy) Redirect(w http.ResponseWriter,r *http.Request){
+	log.Infoln(r.URL)
 	return
 }

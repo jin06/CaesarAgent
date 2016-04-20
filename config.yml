@@ -1,5 +1,4 @@
+#proxy server config
 proxy:
-  port:":9302"
-  timeout:
-    write:10
-    read:10
+  port:9302
+  timeout:{write:10,read:10}

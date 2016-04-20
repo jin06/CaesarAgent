@@ -1,8 +1,9 @@
 package config
 
 import (
-	"gopkg.in/yaml.v2"
 	log "github.com/Sirupsen/logrus"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 	"os"
 )
 
@@ -14,29 +15,40 @@ type Config struct {
 		Timeout struct {
 			Read  int `yaml:"read"`
 			Write int `yaml:"write"`
-		}`yaml:"proxy"`
-	}`yaml:"proxy"`
+		} `yaml:"proxy"`
+	} `yaml:"proxy"`
 }
 
 func ParseConfig(path string) (err error) {
-	var f *os.File
-	if f, err = os.Open(path); err !=nil {
-		return
-	}
-	defer f.Close()
 	var b []byte
-	if _, err = f.Read(b); err !=nil {
+	var f *os.File
+	f, err = os.OpenFile(path, os.O_RDONLY, 0666)
+	if err != nil {
+		//log.Errorln("open config file error:", err)
 		return
 	}
-	log.Infoln(string(b))
+	b, err = ioutil.ReadAll(f)
+	if err != nil {
+		//log.Errorln("read config file error:",err)
+		return
+	}
 	C = new(Config)
 	err = yaml.Unmarshal(b, C)
 	return
 }
 
 func Init(path string) {
-	if err := ParseConfig(path); err !=nil {
-		log.Errorln("parse config error:", err)
-		os.Exit(0)
+	defer func() {
+		if e := recover(); e!=nil {
+			log.Errorln("parse config file error:", e)
+			os.Exit(0)
+		}
+	}()
+	log.Infoln("parse config file. path:", path)
+	err := ParseConfig(path)
+	if err != nil {
+		panic(err)
 	}
+	log.Infoln("parse config success.")
+	log.Debugf("config: \n%+v\n ", *C)
 }

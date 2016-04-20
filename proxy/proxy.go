@@ -8,7 +8,6 @@ import (
 
 func Run(){
 	server := newServer("9304",sty.NewPollStrategy())
-	//
 	log.Infoln(*server)
 	log.Infoln(server.Server.ListenAndServe())
 }
