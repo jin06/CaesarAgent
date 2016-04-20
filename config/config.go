@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-var C *Config
+var C = Config{}
 
 type Config struct {
 	Proxy struct {
@@ -32,8 +32,8 @@ func ParseConfig(path string) (err error) {
 		//log.Errorln("read config file error:",err)
 		return
 	}
-	C = new(Config)
-	err = yaml.Unmarshal(b, C)
+	//log.Infoln(string(b))
+	err = yaml.Unmarshal(b, &C)
 	return
 }
 
@@ -50,5 +50,5 @@ func Init(path string) {
 		panic(err)
 	}
 	log.Infoln("parse config success.")
-	log.Debugf("config: \n%+v\n ", *C)
+	log.Debugf("config: \n%v\n ", C)
 }
