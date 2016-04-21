@@ -1,25 +1,34 @@
 #proxy server config
 proxy:
   port: 9304
-  timeout: {write: 10, read: 10}
-
-#redirect stratery
-stratery: poll | weight
+  timeout: {write: 10, read: 10} #proxy read and write timeout
+  strategy: loop #redirect stratery:
+  redirctTyp: temp #redirect type [temp,perm], temp:temporary redirect,perm:permanently moved
 
 #health check
 health:
-  type: host | port | url
-  #required if url
-  url: GET /test
+  type: host #[host,port,url]
+  url: GET /test #required if type is url
 
 #servers
-endpoint:
+endpoints:
 -
-  host: baidu.com
+  host: http://baidu.com
+  port: 80
+  weight: 1 #required if proxy->stratery is weight
+-
+  host: http://so.com
   port: 80
   weight: 1
 -
-  host: so.com
+  host: http://bing.com
   port: 80
   weight: 1
-
+-
+  host: http://youdao.com
+  port: 80
+  weight: 1
+-
+  host: http://sogou.com
+  port: 80
+  weight: 1

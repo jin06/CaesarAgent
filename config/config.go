@@ -12,11 +12,21 @@ var C = Config{}
 type Config struct {
 	Proxy struct {
 		Port    string `yaml:"port"`
+		Strategy string `yaml:"strategy"`
 		Timeout struct {
 			Read  int `yaml:"read"`
 			Write int `yaml:"write"`
 		} `yaml:"proxy"`
 	} `yaml:"proxy"`
+	Health struct {
+		Type string `yaml:"type"`
+		URL string `yaml:"url"`
+	       }`yaml:"health"`
+	Endpoints []struct{
+		Host string `yaml:"host"`
+		Port string `yaml:"port"`
+		Weight string `yaml:"weight"`
+	}`yaml:"endpoints"`
 }
 
 func ParseConfig(path string) (err error) {

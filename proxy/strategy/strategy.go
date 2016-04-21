@@ -2,22 +2,17 @@
 package strategy
 
 import (
-	"net/http"
 	log "github.com/Sirupsen/logrus"
+	"net/http"
 )
 
-type Strategy interface{
-	Redirect(http.ResponseWriter,*http.Request)
+type Strategy interface {
+	Init()
+	Redirect(http.ResponseWriter, *http.Request)
 }
 
-type PollStrategy struct {}
-
-func NewPollStrategy() *PollStrategy{
-	sty := &PollStrategy{}
-	return sty
-}
-
-func (ps *PollStrategy) Redirect(w http.ResponseWriter,r *http.Request){
-	log.Infoln(r.URL)
-	return
+func redirect(w http.ResponseWriter, host string, port string, redirectTyp int) {
+	w.Header().Set("location", host+":"+port)
+	w.WriteHeader(redirectTyp)
+	log.Infoln("redirect to ", host+":"+port)
 }

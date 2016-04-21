@@ -8,6 +8,7 @@ import (
 	"runtime"
 	"fmt"
 	"os"
+	_ "caesarproxy/endpoint"
 )
 
 var (
@@ -21,12 +22,18 @@ const (
 
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
+
 	flag.Parse()
 	if *vfg {
 		fmt.Println(version)
 		os.Exit(0)
 	}
+
+	log.SetLevel(log.DebugLevel)
+
 	log.Infoln("run caesar-proxy...")
+
 	config.Init(*cfg)
+
 	proxy.Run()
 }
