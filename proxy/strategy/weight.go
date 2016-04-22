@@ -13,11 +13,11 @@ func NewWeightStrategy() (sty *WeightStrategy) {
 	return
 }
 
-func (ps *WeightStrategy) Init(){
+func (sty *WeightStrategy) Init(){
 
 }
 
-func (ps *WeightStrategy) Redirect(w http.ResponseWriter,r *http.Request){
-	return
+func (sty *WeightStrategy) Redirect(w http.ResponseWriter,r *http.Request){
+
 }
 
