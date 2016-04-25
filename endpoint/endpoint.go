@@ -27,11 +27,11 @@ func (ep *EndPoint) CheckHealth(mode string) (cond int, err error) {
 		return
 	}
 	switch mode {
-	case "":
+	case "host":
 		return checkHealthByHost()
-	case "":
+	case "port":
 		return checkHealthByPort()
-	case "":
+	case "url":
 		return checkHealthByURL()
 	default:
 		return checkHealthByHost()

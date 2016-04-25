@@ -6,7 +6,7 @@ import "net/http"
 type LocationStrategy struct{}
 
 func NewLocationStrategy() (sty *LocationStrategy) {
-	sty = &WeightStrategy{}
+	sty = &LocationStrategy{}
 	return
 }
 
