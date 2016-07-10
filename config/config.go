@@ -5,6 +5,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
+	"time"
 )
 
 var C = Config{}
@@ -14,19 +15,20 @@ type Config struct {
 		Port    string `yaml:"port"`
 		Strategy string `yaml:"strategy"`
 		Timeout struct {
-			Read  int `yaml:"read"`
-			Write int `yaml:"write"`
-		} `yaml:"proxy"`
+			Read  time.Duration `yaml:"read"`
+			Write time.Duration `yaml:"write"`
+		} `yaml:"timeout"`
 	} `yaml:"proxy"`
 	Health struct {
 		Type string `yaml:"type"`
 		URL string `yaml:"url"`
 	       }`yaml:"health"`
-	Endpoints []struct{
+	Servers []struct{
 		Host string `yaml:"host"`
 		Port string `yaml:"port"`
 		Weight string `yaml:"weight"`
-	}`yaml:"endpoints"`
+	}`yaml:"servers"`
+	Environment string `yaml:"environment"`
 }
 
 func ParseConfig(path string) (err error) {
@@ -34,15 +36,12 @@ func ParseConfig(path string) (err error) {
 	var f *os.File
 	f, err = os.OpenFile(path, os.O_RDONLY, 0666)
 	if err != nil {
-		//log.Errorln("open config file error:", err)
 		return
 	}
 	b, err = ioutil.ReadAll(f)
 	if err != nil {
-		//log.Errorln("read config file error:",err)
 		return
 	}
-	//log.Infoln(string(b))
 	err = yaml.Unmarshal(b, &C)
 	return
 }
@@ -54,11 +53,11 @@ func Init(path string) {
 			os.Exit(0)
 		}
 	}()
-	log.Infoln("parse config file. path:", path)
+	log.Infoln("Parse config file, path:", path)
 	err := ParseConfig(path)
 	if err != nil {
 		panic(err)
 	}
 	log.Infoln("parse config success.")
-	log.Debugf("config: \n%v\n ", C)
+	log.Infof("config: \n%+v\n ", C)
 }

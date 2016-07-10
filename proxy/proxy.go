@@ -23,31 +23,12 @@ const (
 var RunStyle = 0x00
 
 func Run() {
-	//switch config.C.Proxy.Strategy {
-	//case "poll" :
-	//	RunStyle = RunStyle_Poll_Code
-	//default:
-	//	log.Errorln("unknow distribute strategy:",config.C.Proxy.Strategy)
-	//	os.Exit(0)
-	//}
-	//RunStyle = RunStyle << 4
-	//switch config.C.Health.Type {
-	//case "host":
-	//	RunStyle = RunStyle + RunStyle_Host_Code
-	//case "port":
-	//	RunStyle = RunStyle + RunStyle_Port_Code
-	//case "url":
-	//	RunStyle = RunStyle + RunStyle_URL_Code
-	//default:
-	//	log.Errorln("unknow health check type:",config.C.Health.Type)
-	//	os.Exit(0)
-	//}
 	var server *Server
 	switch config.C.Proxy.Strategy {
-	case "loop":
-		server = newServer(config.C.Proxy.Port, sty.NewLoopStrategy())
+	case "polling":
+		server = newServer(config.C.Proxy.Port, sty.NewPollingStrategy())
 	default:
-		log.Errorln("unknown distribute strategy:", config.C.Proxy.Strategy)
+		log.Errorln("Unknown distribute strategy:", config.C.Proxy.Strategy)
 		os.Exit(0)
 	}
 	switch config.C.Health.Type {
@@ -56,7 +37,7 @@ func Run() {
 	case "url":
 	default:
 	}
-	log.Infoln("start proxy server in port:", config.C.Proxy.Port)
+	log.Infoln("Start proxy server in port:", config.C.Proxy.Port)
 	server.Strategy.Init()
 	log.Infoln(server.Server.ListenAndServe())
 }

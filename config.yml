@@ -1,9 +1,11 @@
 #proxy server config
 proxy:
   port: 9304
-  timeout: {write: 10, read: 10} #proxy read and write timeout
+  timeout: #proxy read and write timeout
+    write: 5
+    read: 5
   redirctTyp: temp #redirect type [temp,perm], temp:temporary redirect,perm:permanently moved
-  strategy: loop #redirect stratery:[loop,weight,location]
+  strategy: polling #redirect stratery:[loop,weight,location]
 
 #health check
 health:
@@ -11,40 +13,13 @@ health:
   url: GET /test #required if type is 'url'
 
 #servers
-endpoints:
--
-  host: http://baidu.com
-  port: 80
-  weight: 1      #required if proxy->stratery is 'weight'
-  area_code:
-    - beijing: CN.BJ   #required if proxy->stratery is 'location'
-    - hebei: CN.HB
-    - heilongjiang: CN.HLJ
-    - jilin: CN.JL
-    - liaoning: CN.LN
-    - neimenggu: CN.NMG
--
-  host: http://so.com
-  port: 80
-  weight: 1
-  area_code:
-    - default: default
--
-  host: http://bing.com
-  port: 80
-  weight: 1
-  area_code:
-    - shanghai: CN.SH
-    - zhejiang: CN.ZJ
--
-  host: http://youdao.com
-  port: 80
-  weight: 1
-  area_code:
-    - "guangdong": CN.GD
--
-  host: http://sogou.com
-  port: 80
-  weight: 1
-  area_code:
-    - "sichuan": CN.SC
+servers:
+  - host: www.baidu.com
+    port: 80
+    weight: 1
+  - host: www.so.com
+    port: 80
+    weight: 1
+
+#enviroment
+enviroment: debug  #debug product
